@@ -3,7 +3,6 @@ use std::{path::PathBuf, fs::Metadata, time::SystemTime, ffi::OsString, os::unix
 use chrono::{DateTime, Local};
 use clap::{Parser, FromArgMatches, Args};
 use colored::Colorize;
-use regex::Regex;
 use walkdir::WalkDir;
 
 use indexmap::IndexMap;
@@ -123,7 +122,7 @@ fn main() {
 
     let entries = glob::glob_with(&opt.path, glob_options).unwrap();
 
-    let regex = Regex::new(r"^(?<stem>.*?)(?<num>[0-9]+)(?<ext>(?:.*)?)$").unwrap();
+    let regex = lsn::build_regex();
 
     let mut map: IndexMap<String, FileGroup> = IndexMap::new();
 
@@ -150,7 +149,7 @@ fn main() {
 
             let key = format!("{}#{}", &caps["stem"], &caps["ext"]);
             let num = caps["num"].parse::<usize>().unwrap();
-            // println!("{}, {}, {}, {}, {}", &key, &file_name_str, &stem_str, num, &caps["ext"]);
+            // println!("{}, {}, {}, {}", &key, &file_name_str, num, &caps["ext"]);
             let meta = entry.metadata().ok().map(Meta::from);
             map.entry(key.clone()).and_modify(
                 |grp| {
