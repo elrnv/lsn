@@ -4,6 +4,7 @@ authors = ["Egor Larionov <egor.larionov@gmail.com>"]
 version = "0.1.0"
 license = "MPL-2.0"
 edition = "2021"
+description = "A command line tool for compactly listing numbered items in a given directory"
 keywords = ["ls", "numbered", "command"]
 
 [dependencies]
