@@ -1,4 +1,4 @@
-use std::{path::PathBuf, fs::Metadata, time::SystemTime, ffi::OsString, os::unix::prelude::OsStrExt};
+use std::{path::PathBuf, fs::Metadata, time::SystemTime, ffi::OsString};
 
 use chrono::{DateTime, Local};
 use clap::{Parser, FromArgMatches, Args};
@@ -131,7 +131,8 @@ fn main() {
             let path = entry.path();
             let parent = path.parent().map(ToOwned::to_owned);
             let stem = path.file_stem().map(ToOwned::to_owned).unwrap_or(OsString::from("."));
-            if !opt.all && stem.as_os_str().as_bytes()[0] == b'.' {
+            let stem_str = stem.to_string_lossy();
+            if !opt.all && stem_str.as_bytes()[0] == b'.' {
                 continue;
             }
             let extension = path.extension().map(ToOwned::to_owned).unwrap_or(OsString::from(""));
